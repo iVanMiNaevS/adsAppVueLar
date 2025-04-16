@@ -6,6 +6,7 @@ import MyAdsVue from '@/views/MyAds.vue'
 import EditAdsVue from '@/views/EditAds.vue'
 import CreateAdsVue from '@/views/CreateAds.vue'
 import OneAdsVue from '@/views/OneAds.vue'
+import NotFoundVue from '@/views/NotFound.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -17,6 +18,8 @@ const router = createRouter({
     { path: '/edit/:id', component: EditAdsVue, name: 'edit' },
     { path: '/create', component: CreateAdsVue, name: 'create' },
     { path: '/ads/:id', component: OneAdsVue, name: 'oneAds' },
+    { path: '/:pathMatch(.*)*', component: NotFoundVue, name: 'notFound', meta: { noHeader: true } },
+
   ],
 })
 

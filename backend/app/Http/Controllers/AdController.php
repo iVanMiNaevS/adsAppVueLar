@@ -31,21 +31,34 @@ class AdController extends Controller
     }
     public function all()
     {
-        $ads = Ad::all();
+        $ads = Ad::all()->map(function ($ad) {
+            $ad->image_url = asset('storage/' . $ad->image_url);
+            return $ad;
+        });
+
+
+        return response()->json(['data' => $ads]);
+    }
+    public function byUser(Request $request)
+    {
+        $userId = $request->user()->id;
+
+        $ads = Ad::where('user_id', $userId)->get()->map(function ($ad) {
+            $ad->image_url = asset('storage/' . $ad->image_url);
+            return $ad;
+        });
+
+
         return response()->json(['data' => $ads]);
     }
     public function one(string $id, Request $request)
     {
         try {
             $ad = Ad::with('user')->find($id);
-
-            if ($ad->user_id !== $request->user()->id) {
-                return response()->json(['message' => 'Forbidden'], 403);
-            }
             $ad->image_url = asset('storage/' . $ad->image_url);
             return response()->json(['data' => $ad]);
         } catch (\Throwable $th) {
-            return response()->json(['message' => 'Not found'], 404);
+            return response()->json(['message' => $th->getMessage()], 404);
         }
     }
     public function update(string $id, AdRequest $request)

@@ -31,10 +31,22 @@
     </div>
 </template>
 <script setup>
+import { API } from '@/config';
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 const email = ref('');
 const password = ref('');
+
+const router = useRouter();
+
+async function handleRegister() {
+    const response = await fetch(`${API}/registration`)
+
+    if (response.ok) {
+        router.push('/login')
+    }
+}
 </script>
 <style lang="">
 

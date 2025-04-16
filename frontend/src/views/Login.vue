@@ -27,9 +27,22 @@
 </template>
 <script setup>
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 const email = ref('');
 const password = ref('');
+const router = useRouter();
+
+async function handleLogin() {
+    const response = await fetch(`${API}/login`)
+
+    if (response.ok) {
+        const data = await response.json()
+
+        localStorage.setItem('token', data.token)
+        router.push('/')
+    }
+}
 </script>
 <style lang="">
 

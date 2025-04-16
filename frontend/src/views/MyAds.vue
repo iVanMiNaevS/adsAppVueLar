@@ -5,74 +5,66 @@
   <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
 
     <!-- Карточка пользователя 1 -->
-    <div class="col">
+    <div class="col" v-for="ad in ads" :key='ad.id'>
       <div class="card h-100 shadow-sm">
         <img src="https://via.placeholder.com/400x250" class="card-img-top" alt="Товар 1">
         <div class="card-body d-flex flex-column">
-          <h5 class="card-title">Смартфон Samsung Galaxy</h5>
-          <p class="card-text">Мощный и стильный телефон с AMOLED-дисплеем.</p>
+          <h5 class="card-title">{{ad.name}}</h5>
+          <p class="card-text">{{ad.description}}</p>
           <div class="mt-auto">
-            <div class="card-price mb-2">23 990 ₽</div>
+            <div class="card-price mb-2">{{ad.price}} ₽</div>
             <div class="card-buttons">
-              <button class="btn btn-primary btn-sm">Редактировать</button>
-              <button class="btn btn-danger btn-sm">Удалить</button>
+              <button class="btn btn-primary btn-sm"><router-link class="text-light" :to="`/ads/${ad.id}`">Редактировать</router-link></button>
+              <button class="btn btn-danger btn-sm" @click='deleteAd(ad.id)'>Удалить</button>
             </div>
           </div>
         </div>
       </div>
     </div>
-
-    <!-- Карточка пользователя 2 -->
-    <div class="col">
-      <div class="card h-100 shadow-sm">
-        <img src="https://via.placeholder.com/400x250" class="card-img-top" alt="Товар 2">
-        <div class="card-body d-flex flex-column">
-          <h5 class="card-title">Ноутбук Lenovo IdeaPad</h5>
-          <p class="card-text">Универсальный ноутбук для работы и учебы.</p>
-          <div class="mt-auto">
-            <div class="card-price mb-2">45 000 ₽</div>
-            <div class="card-buttons">
-              <button class="btn btn-primary btn-sm">Редактировать</button>
-              <button class="btn btn-danger btn-sm">Удалить</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Карточка пользователя 3 -->
-    <div class="col">
-      <div class="card h-100 shadow-sm">
-        <img src="https://via.placeholder.com/400x250" class="card-img-top" alt="Товар 3">
-        <div class="card-body d-flex flex-column">
-          <h5 class="card-title">Кофемашина Philips</h5>
-          <p class="card-text">Автоматическая кофемашина для дома.</p>
-          <div class="mt-auto">
-            <div class="card-price mb-2">12 500 ₽</div>
-            <div class="card-buttons">
-              <button class="btn btn-primary btn-sm">Редактировать</button>
-              <button class="btn btn-danger btn-sm">Удалить</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
   </div>
 </div>
 </template>
 <script setup>
+import { API } from '@/config';
+import { ref } from 'vue';
+import { useRoute } from 'vue-router';
 
+const ads = ref([{ id: 1, name: "Name", description: "fksj dlfka lkjf sl alfkjas dlk jfa ldkjf", price: 1500 },
+{ id: 2, name: "Name", description: "fksj dlfka lkjf sl alfkjas dlk jfa ldkjf", price: 1500 },
+{ id: 3, name: "Name", description: "fksj dlfka lkjf sl alfkjas dlk jfa ldkjf", price: 1500 }]);
+const router = useRoute()
+async function fetchMyAds() {
+  const response = await fetch(`${API}/ad/by-user`, {
+    headers: {
+      'Authorization': localStorage.getItem('token')
+    }
+  })
+  if (response.ok) {
+    ads.value = await response.json()
+  }
+}
+async function deleteAd(id) {
+  const response = await fetch(`${API}/ad/${id}`, {
+    method: 'delete',
+    headers: {
+      'Authorization': localStorage.getItem('token')
+    }
+  })
+  if (response.ok) {
+    console.log('delete')
+  }
+}
+fetchMyAds()
 </script>
 <style lang="css">
 .card-price {
-    font-weight: bold;
-    color: #28a745;
+  font-weight: bold;
+  color: #28a745;
 }
 
 .card-buttons {
-    display: flex;
-    gap: 10px;
-    margin-top: 10px;
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
 }
 </style>

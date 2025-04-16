@@ -31,6 +31,7 @@
 </template>
 
 <script setup>
+import { API } from '@/config'
 import { ref } from 'vue'
 
 // 🔸 Пример объявления (в реальности — получаем с API)
@@ -41,7 +42,20 @@ const ad = {
     image: 'https://via.placeholder.com/800x400',
     userEmail: 'user@example.com'
 }
+async function getAdById() {
+    const response = await fetch(`${API}/${route.params.id}`, {
+        headers: {
+            'Authorization': localStorage.getItem('token')
+        }
+    })
 
+    if (response.ok) {
+        const data = await response.json().data
+
+        ad.value = data
+    }
+}
+getAdById()
 // Контроль показа email
 const showEmail = ref(false)
 </script>

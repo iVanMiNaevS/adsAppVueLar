@@ -15,7 +15,7 @@
 
     <div class="col" v-for="ad in ads" :key="ad.id">
       <div class="card h-100 shadow-sm">
-        <img src="https://via.placeholder.com/400x250" class="card-img-top" alt="Товар 1">
+        <img src="https://via.placeholder.com/400x250" class="card-img-top" alt="Товар 1" style='cursor:pointer'  @click='$router.push(`/ads/${ad.id}`)'>
         <div class="card-body">
           <h5 class="card-title">{{ad.name}}</h5>
           <p class="card-text">{{ad.description}}</p>
@@ -30,6 +30,7 @@
 </div>
 </template>
 <script setup>
+import { API } from '@/config';
 import { ref } from 'vue';
 
 const ads = ref([{ id: 1, name: "Name", description: "fksj dlfka lkjf sl alfkjas dlk jfa ldkjf", price: 1500 },
@@ -46,6 +47,7 @@ async function fetchAds() {
     ads.value = await response.json()
   }
 }
+fetchAds()
 </script>
 <style lang="">
 

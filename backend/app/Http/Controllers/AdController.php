@@ -37,7 +37,7 @@ class AdController extends Controller
     public function one(string $id, Request $request)
     {
         try {
-            $ad = Ad::findOrFail($id);
+            $ad = Ad::with('user')->find($id);
 
             if ($ad->user_id !== $request->user()->id) {
                 return response()->json(['message' => 'Forbidden'], 403);

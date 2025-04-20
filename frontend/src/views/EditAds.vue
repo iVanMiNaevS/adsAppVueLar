@@ -1,4 +1,4 @@
-<template lang="">
+<template lang="html">
   <div class="container py-5">
     <div class="form-container">
       <h1 class="mb-4">Редактировать объявление</h1>
@@ -61,7 +61,7 @@
     </div>
   </div>
 </template>
-<script setup>
+<script setup >
 import { API } from '@/config'
 import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'

@@ -1,8 +1,9 @@
-<template lang="">
+<template lang="html">
   <div class="container py-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
       <h1 class="mb-0">Объявления</h1>
-
+      <Notification/>
+      <button @click="createAds">create</button>
       <div class="d-flex align-items-center">
         <label class="me-2" for="sortSelect">Сортировка:</label>
         <select id="sortSelect" @change="handleSort" class="form-select w-auto">
@@ -37,8 +38,17 @@
 <script setup>
 import { API } from '@/config'
 import { ref } from 'vue'
+import Notification from "@/components/Notification.vue";
 
 const ads = ref([])
+
+async function createAds() {
+  await fetch("http://localhost:3000/api/ads", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({'title': 'fsfds', 'description': 'fsfds'})
+
+})}
 
 function handleSort(e) {
   if (e.target.value === 'asc') {
